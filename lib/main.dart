@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_platform_2024/color.dart';
-import 'package:mobile_platform_2024/family_together.dart';
+import 'package:mobile_platform_2024/family_together/agenda.dart';
+import 'package:mobile_platform_2024/family_together/family_together.dart';
+import 'package:mobile_platform_2024/family_together/family_history.dart';
 import 'package:mobile_platform_2024/home.dart';
 import 'package:mobile_platform_2024/question_history.dart';
 import 'package:mobile_platform_2024/today_question.dart';
@@ -20,6 +22,14 @@ class MyApp extends StatelessWidget {
       navigatorKey: navigatorKey,
       title: 'Mobile Platform 2024',
       home: const MainPage(),
+      initialRoute: '/',
+      routes: {
+        // '/' : (context) => MainPage(),
+        '/family_together' : (context) => FamilyTogetherPage(),
+        '/family_together/agenda' : (context) => AgendaInputPage(),
+        '/family_together/history' : (context) => FamilyHistoryPage(),
+
+      },
     );
   }
 }
@@ -37,7 +47,7 @@ class _MainPageState extends State<MainPage> {
     Home(),
     TodayQuestion(),
     QuestionHistory(),
-    FamilyTogether(),
+    FamilyTogetherPage(),
   ];
 
   @override
