@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_platform_2024/PurposeList.dart';
 import 'package:mobile_platform_2024/color.dart';
 import 'package:mobile_platform_2024/family_together/agenda.dart';
 import 'package:mobile_platform_2024/family_together/family_together.dart';
 import 'package:mobile_platform_2024/family_together/family_history.dart';
+import 'package:mobile_platform_2024/family_together/select_agenda.dart';
 import 'package:mobile_platform_2024/home.dart';
 import 'package:mobile_platform_2024/question_history.dart';
 import 'package:mobile_platform_2024/today_question.dart';
@@ -28,6 +30,7 @@ class MyApp extends StatelessWidget {
         '/family_together' : (context) => FamilyTogetherPage(),
         '/family_together/agenda' : (context) => AgendaInputPage(),
         '/family_together/history' : (context) => FamilyHistoryPage(),
+        '/family_together/start' : (context) => SelectAgendaPage()
 
       },
     );
@@ -45,7 +48,7 @@ class _MainPageState extends State<MainPage> {
   var _index = 0;
   List<Widget> _pages = [
     Home(),
-    TodayQuestion(),
+    ppListScreen(),
     QuestionHistory(),
     FamilyTogetherPage(),
   ];

@@ -13,7 +13,6 @@ class FamilyHistoryPageState extends State<FamilyHistoryPage> {
     {"id": 2, "agenda": "agenda2"},
     {"id": 3, "agenda": "agenda3"}
   ];
-
   final _controller = TextEditingController();
 
   void findHistory(keyword) async {
@@ -24,6 +23,7 @@ class FamilyHistoryPageState extends State<FamilyHistoryPage> {
   @override
   void initState() {
     super.initState();
+
   }
 
   @override

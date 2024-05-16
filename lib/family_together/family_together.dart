@@ -28,7 +28,7 @@ class _FamilyTogetherPageState extends State<FamilyTogetherPage> {
               child: Text("지난대화 확인하기")),
           ElevatedButton(
               onPressed: () =>
-                  Navigator.pushNamed(context, '/family_together/agenda'),
+                  Navigator.pushNamed(context, '/family_together/start'),
               child: Text("가족대화 시작하기")),
           Container(
             child: Text("대화 참여자"),
