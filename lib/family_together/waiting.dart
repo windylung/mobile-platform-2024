@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_platform_2024/shared_button.dart';
 
 class WaitingPage extends StatefulWidget {
   const WaitingPage({super.key});
@@ -13,16 +14,11 @@ class _WaitingPageState extends State<WaitingPage> {
 
   @override
   Widget build(BuildContext context) {
-    return (Scaffold(
+    return (const Scaffold(
       body: SafeArea(
-          child: Column(
-        children: [
-          const Text("data"),
-          ElevatedButton(
-              onPressed: () => Navigator.pushNamed(
-                  context, '/family_together/select_agenda'),
-              child: const Text("대화시작"))
-        ],
+          child: Center(
+        child: OrangeButton(
+            text: "대화 시작", route: '/family_together/select_agenda'),
       )),
     ));
   }
