@@ -4,10 +4,10 @@ class FamilyHistoryPage extends StatefulWidget {
   const FamilyHistoryPage({super.key});
 
   @override
-  State<FamilyHistoryPage> createState() => FamilyHistoryPageState();
+  State<FamilyHistoryPage> createState() => _FamilyHistoryPageState();
 }
 
-class FamilyHistoryPageState extends State<FamilyHistoryPage> {
+class _FamilyHistoryPageState extends State<FamilyHistoryPage> {
   List<Map<String, dynamic>> histories = [
     {"id": 1, "agenda": "채소를 먹기 싫어요"},
     {"id": 2, "agenda": "agenda2"},
@@ -23,7 +23,6 @@ class FamilyHistoryPageState extends State<FamilyHistoryPage> {
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
@@ -42,23 +41,21 @@ class FamilyHistoryPageState extends State<FamilyHistoryPage> {
                   icon: const Icon(Icons.search),
                 )
               ],
-              elevation: MaterialStatePropertyAll(2),
+              elevation: const MaterialStatePropertyAll(2),
               hintText: "검색어를 입력하세요",
             ),
-
-            Expanded(child: ListView.builder(
-
-                itemCount: histories.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    child: Column(
-                      children: [
-                        Text("${histories[index]["id"]}"),
-                        Text("${histories[index]["agenda"]}"),
-                      ],
-                    )
-                  );
-                }))
+            Expanded(
+                child: ListView.builder(
+                    itemCount: histories.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                          child: Column(
+                        children: [
+                          Text("${histories[index]["id"]}"),
+                          Text("${histories[index]["agenda"]}"),
+                        ],
+                      ));
+                    }))
           ],
         ),
       ),

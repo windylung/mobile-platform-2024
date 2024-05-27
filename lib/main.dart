@@ -5,12 +5,12 @@ import 'package:mobile_platform_2024/family_together/agenda.dart';
 import 'package:mobile_platform_2024/family_together/family_together.dart';
 import 'package:mobile_platform_2024/family_together/family_history.dart';
 import 'package:mobile_platform_2024/family_together/select_agenda.dart';
+import 'package:mobile_platform_2024/family_together/waiting.dart';
 import 'package:mobile_platform_2024/home.dart';
 import 'package:mobile_platform_2024/question_history.dart';
-import 'package:mobile_platform_2024/today_question.dart';
 
 void main() {
-  runApp( MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -27,11 +27,15 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         // '/' : (context) => MainPage(),
-        '/family_together' : (context) => FamilyTogetherPage(),
-        '/family_together/agenda' : (context) => AgendaInputPage(),
-        '/family_together/history' : (context) => FamilyHistoryPage(),
-        '/family_together/start' : (context) => SelectAgendaPage()
-
+        '/family_together': (context) => const FamilyTogetherPage(),
+        '/family_together/agenda': (context) => const AgendaInputPage(),
+        '/family_together/history': (context) => const FamilyHistoryPage(),
+        '/family_together/history_detail': (context) =>
+            const FamilyHistoryPage(),
+        '/family_together/waiting': (context) => const WaitingPage(),
+        '/family_together/select_agenda': (context) => const SelectAgendaPage()
+        // 여기에 추가
+        // Navigator.pushNamed(context, '/family_together/start'),
       },
     );
   }
@@ -46,31 +50,32 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   var _index = 0;
-  List<Widget> _pages = [
-    Home(),
-    ppListScreen(),
-    QuestionHistory(),
-    FamilyTogetherPage(),
+  final List<Widget> _pages = [
+    const Home(),
+    const ppListScreen(),
+    const QuestionHistory(),
+    const FamilyTogetherPage(),
   ];
 
   @override
-  void initState () => super.initState();
+  void initState() => super.initState();
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
-        title: Text("오리함께"),
+        title: const Text("오리함께"),
       ),
       body: SafeArea(
         child: _pages[_index],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
+        items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home), label: '홈'),
-          BottomNavigationBarItem(icon: Icon(Icons.question_answer), label: '오늘문답'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.question_answer), label: '오늘문답'),
           BottomNavigationBarItem(icon: Icon(Icons.history), label: '문답기록'),
-          BottomNavigationBarItem(icon: Icon(Icons.family_restroom), label: '가족회의'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.family_restroom), label: '가족회의'),
         ],
         currentIndex: _index,
         onTap: (value) {
@@ -78,7 +83,7 @@ class _MainPageState extends State<MainPage> {
             _index = value;
           });
         },
-        selectedItemColor: color_orange,
+        selectedItemColor: colorOrange,
         unselectedItemColor: Colors.grey,
       ),
     );

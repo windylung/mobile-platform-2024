@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_platform_2024/color.dart';
-class SelectAgendaPage extends StatefulWidget{
+
+class SelectAgendaPage extends StatefulWidget {
   const SelectAgendaPage({super.key});
 
   @override
@@ -8,45 +9,62 @@ class SelectAgendaPage extends StatefulWidget{
 }
 
 class SelectAgendaPageState extends State<SelectAgendaPage> {
-  List<Map<String, dynamic>> histories = [
+  List<Map<String, dynamic>> agendas = [
     {"id": 1, "agenda": "채소를 먹기 싫어요"},
     {"id": 2, "agenda": "agenda2"},
     {"id": 3, "agenda": "agenda3"}
   ];
 
-  @override
-  void initState(){
-    super.initState();
+  List<bool> _selectedAgenda = [];
 
+  @override
+  void initState() {
+    super.initState();
+    _selectedAgenda = List<bool>.filled(agendas.length, false);
   }
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("안건 선택"),
-
+        title: const Text("안건 선택"),
       ),
       body: SafeArea(
         child: Column(
           children: [
-            Expanded(child: ListView.builder(
-
-                itemCount: histories.length,
-                itemBuilder: (context, index) {
-                  return InkWell(
-
-                      child: Column(
-                        children: [
-                          Text("${histories[index]["id"]}"),
-                          Text("${histories[index]["agenda"]}"),
-                        ],
-                      )
-                  );
-                }))
+            Expanded(
+                child: ListView.builder(
+                    itemCount: agendas.length,
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                          onTap: () {
+                            setState(() {
+                              _selectedAgenda[index] = !_selectedAgenda[index];
+                            });
+                          },
+                          child: Container(
+                            color: _selectedAgenda[index]
+                                ? colorDeepBlue
+                                : colorLightBlue,
+                            child: Column(
+                              children: [
+                                Text("${agendas[index]["id"]}"),
+                                Text("${agendas[index]["agenda"]}"),
+                              ],
+                            ),
+                          ));
+                    })),
+            ElevatedButton(
+              onPressed: () {
+                print(_selectedAgenda);
+              },
+              child: const Text("대화시작"),
+            )
           ],
         ),
       ),
     );
   }
 }
+
+// RangeError (index) Invalid value : Valid Value range is Empty : 0

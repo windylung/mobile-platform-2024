@@ -21,17 +21,17 @@ class _FamilyTogetherPageState extends State<FamilyTogetherPage> {
           ElevatedButton(
               onPressed: () =>
                   Navigator.pushNamed(context, '/family_together/agenda'),
-              child: Text("대화주제 작성")),
+              child: const Text("대화주제 작성")),
           ElevatedButton(
               onPressed: () =>
                   Navigator.pushNamed(context, '/family_together/history'),
-              child: Text("지난대화 확인하기")),
+              child: const Text("지난대화 확인하기")),
           ElevatedButton(
               onPressed: () =>
-                  Navigator.pushNamed(context, '/family_together/start'),
-              child: Text("가족대화 시작하기")),
+                  Navigator.pushNamed(context, '/family_together/waiting'),
+              child: const Text("가족대화 시작하기")),
           Container(
-            child: Text("대화 참여자"),
+            child: const Text("대화 참여자"),
           )
         ],
       )),
