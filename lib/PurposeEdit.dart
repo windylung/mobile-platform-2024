@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'PurposeList.dart';
+import '../PurposeList.dart';
 
 class ppEditScreen extends StatefulWidget {
   final Purpose? pp;

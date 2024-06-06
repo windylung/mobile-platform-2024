@@ -1,6 +1,23 @@
 import 'package:flutter/material.dart';
 import 'PurposeEdit.dart';
 
+void main(){
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context){
+    return const MaterialApp(
+      title: "purpose screen",
+      home: ppListScreen(),
+    );
+  }
+}
+
+
 class Purpose {
   String content;
 
@@ -67,20 +84,23 @@ class ppListScreenState extends State<ppListScreen> {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.large(
         onPressed: () async {
           final result = await Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const ppEditScreen()),
           );
 
-          print(result.toString());
           if (result != null) {
             setState(() {
               pps.add(result);
-;            });
+              print(pps);
+              ;            });
           }
         },
+
+        backgroundColor: Color(0xFFFFC076),
+
         child: const Icon(Icons.add),
       ),
     );
