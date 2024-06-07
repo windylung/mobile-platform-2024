@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_platform_2024/LoginScreen.dart';
 import 'package:mobile_platform_2024/PurposeList.dart';
+import 'package:mobile_platform_2024/SignUpScreen.dart';
 import 'package:mobile_platform_2024/color.dart';
 import 'package:mobile_platform_2024/family_together/agenda.dart';
 import 'package:mobile_platform_2024/family_together/family_together.dart';
@@ -27,13 +29,15 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         // '/' : (context) => MainPage(),
+
         '/family_together': (context) => const FamilyTogetherPage(),
         '/family_together/agenda': (context) => const AgendaInputPage(),
         '/family_together/history': (context) => const FamilyHistoryPage(),
         '/family_together/history_detail': (context) =>
             const FamilyHistoryPage(),
         '/family_together/waiting': (context) => const WaitingPage(),
-        '/family_together/select_agenda': (context) => const SelectAgendaPage()
+        '/family_together/select_agenda': (context) => const SelectAgendaPage(),
+        '/signup' : (context) => const SignUpScreen()
         // 여기에 추가
         // Navigator.pushNamed(context, '/family_together/start'),
       },
@@ -55,6 +59,7 @@ class _MainPageState extends State<MainPage> {
     const ppListScreen(),
     const QuestionHistory(),
     const FamilyTogetherPage(),
+    const LoginScreen()
   ];
 
   @override
@@ -62,9 +67,10 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("오리함께"),
-      ),
+      backgroundColor: Colors.white,
+      // appBar: AppBar(
+      //   title: const Text("오리함께"),
+      // ),
       body: SafeArea(
         child: _pages[_index],
       ),
@@ -76,8 +82,11 @@ class _MainPageState extends State<MainPage> {
           BottomNavigationBarItem(icon: Icon(Icons.history), label: '문답기록'),
           BottomNavigationBarItem(
               icon: Icon(Icons.family_restroom), label: '가족회의'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.login), label: '로그인'),
         ],
         currentIndex: _index,
+
         onTap: (value) {
           setState(() {
             _index = value;
