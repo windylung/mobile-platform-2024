@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_platform_2024/shared_button.dart';
 
 import '../family_answer.dart';
 
@@ -45,17 +46,20 @@ class ppEditScreenState extends State<ppEditScreen> {
                 return null;
               },
             ),
-            ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
+            SizedBox(height: 8),
+            OrangeButton(
+                // onPressed: () {
+                //   if (_formKey.currentState!.validate()) {
+                //     _formKey.currentState!.save();
+                //
+                //     final newPurpose = Purpose(content: _content!);
+                //
+                //     Navigator.pop(context, newPurpose);
+                //   }
+                // },
+                text: '내 답변 저장하기',
+                route: '/family_answer',)
 
-                    final newPurpose = Purpose(content: _content!);
-
-                    Navigator.pop(context, newPurpose);
-                  }
-                },
-                child: const Text("저장"))
           ],
         ),
       ),

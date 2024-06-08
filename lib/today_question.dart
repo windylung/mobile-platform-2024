@@ -40,7 +40,7 @@ class TodayQuestion extends StatelessWidget {
             const SizedBox(height: 20),
             const OrangeButton(
               text: "답변하기",
-              route: '/family_answer'
+              route: '/my_answer'
             ),
           ],
         ),
