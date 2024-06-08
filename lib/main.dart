@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_platform_2024/LoginScreen.dart';
-import 'package:mobile_platform_2024/PurposeList.dart';
+import 'package:mobile_platform_2024/my_answer.dart';
+import 'package:mobile_platform_2024/family_answer.dart';
 import 'package:mobile_platform_2024/SignUpScreen.dart';
 import 'package:mobile_platform_2024/color.dart';
 import 'package:mobile_platform_2024/family_together/agenda.dart';
@@ -10,6 +11,7 @@ import 'package:mobile_platform_2024/family_together/select_agenda.dart';
 import 'package:mobile_platform_2024/family_together/waiting.dart';
 import 'package:mobile_platform_2024/home.dart';
 import 'package:mobile_platform_2024/question_history.dart';
+import 'package:mobile_platform_2024/today_question.dart';
 
 void main() {
   runApp(MyApp());
@@ -34,10 +36,12 @@ class MyApp extends StatelessWidget {
         '/family_together/agenda': (context) => const AgendaInputPage(),
         '/family_together/history': (context) => const FamilyHistoryPage(),
         '/family_together/history_detail': (context) =>
-            const FamilyHistoryPage(),
+        const FamilyHistoryPage(),
         '/family_together/waiting': (context) => const WaitingPage(),
         '/family_together/select_agenda': (context) => const SelectAgendaPage(),
-        '/signup' : (context) => const SignUpScreen()
+        '/signup' : (context) => const SignUpScreen(),
+        '/my_answer' : (context) => const ppEditScreen(),
+        '/family_answer' : (context) => const ppListScreen()
         // 여기에 추가
         // Navigator.pushNamed(context, '/family_together/start'),
       },
@@ -56,7 +60,7 @@ class _MainPageState extends State<MainPage> {
   var _index = 0;
   final List<Widget> _pages = [
     const Home(),
-    const ppListScreen(),
+    const TodayQuestion(),
     const QuestionHistory(),
     const FamilyTogetherPage(),
     const LoginScreen()

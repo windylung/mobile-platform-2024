@@ -45,6 +45,8 @@ class LoginScreenState extends State<LoginScreen> {
                   const Text(
                     '이메일과 비밀번호를\n입력하세요',
                     style:
+
+
                         TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 55),
@@ -145,7 +147,7 @@ class LoginScreenState extends State<LoginScreen> {
                 ],
               ),
               Center(
-                child: OrangeActionButton(text: "회원가입", onPressed: () {
+                child: OrangeActionButton(text: "로그인", onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     // 추가적인 회원가입 처리 로직을 여기에 작성

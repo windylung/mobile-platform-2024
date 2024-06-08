@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mobile_platform_2024/color.dart';
 import 'package:mobile_platform_2024/shared_button.dart';
+
 import 'package:http/http.dart' as http;
+
 
 void main() {
   runApp(MaterialApp(
@@ -74,6 +76,8 @@ class SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+
+
       body: Form(
         key: _formKey,
         child: Padding(
@@ -239,6 +243,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                 ],
               ),
               Center(
+
                 child: OrangeActionButton(
                   text: "회원가입",
                   onPressed: () async {
@@ -249,6 +254,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                     }
                   },
                 ),
+
               ),
             ],
           ),
