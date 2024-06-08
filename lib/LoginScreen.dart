@@ -45,7 +45,9 @@ class LoginScreenState extends State<LoginScreen> {
                   const Text(
                     '이메일과 비밀번호를\n입력하세요',
                     style:
-                    TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
+
+
+                        TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 55),
                   Container(
