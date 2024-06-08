@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mobile_platform_2024/color.dart';
 import 'package:mobile_platform_2024/shared_button.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(MaterialApp(
@@ -24,11 +26,54 @@ class SignUpScreenState extends State<SignUpScreen> {
   String? _pw;
   String? _pwCheck;
 
+  Future<String> signUp(String username, String email, String password) async {
+    final url = Uri.parse('http://54.180.42.87/api/signup');  // 실제 서버 주소 사용
+    final headers = {"Content-Type": "application/json"};
+    final body = jsonEncode({
+      'name': username,
+      'email': email,
+      'password': password,
+    });
+
+    final response = await http.post(url, headers: headers, body: body);
+
+    if (response.statusCode == 201) {
+      // 회원가입 성공
+      print('User signed up successfully: ${response.body}');
+      return '회원가입되었습니다!';
+    } else {
+      // 회원가입 실패
+      print('Failed to sign up: ${response.statusCode}');
+      return '에러가 발생하였습니다!';
+    }
+  }
+
+  void _showDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              child: const Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();  // 팝업 닫기
+                if (message == '회원가입되었습니다!') {
+                  Navigator.of(context).pop();  // 메인 화면으로 이동
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-
       body: Form(
         key: _formKey,
         child: Padding(
@@ -194,13 +239,16 @@ class SignUpScreenState extends State<SignUpScreen> {
                 ],
               ),
               Center(
-                child: OrangeActionButton(text: "회원가입", onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
-                    // 추가적인 회원가입 처리 로직을 여기에 작성
-                    Navigator.pop(context);
-                  }
-                },),
+                child: OrangeActionButton(
+                  text: "회원가입",
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
+                      String message = await signUp(_name!, _email!, _pw!);
+                      _showDialog(message);
+                    }
+                  },
+                ),
               ),
             ],
           ),
