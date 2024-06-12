@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "394921406491",
+    "project_id": "ducktogether-a1a42",
+    "storage_bucket": "ducktogether-a1a42.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:394921406491:android:eeafd9d7a2f6acc786c8be",
+        "android_client_info": {
+          "package_name": "com.example.ducktogether"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJ_MZG_ECOC9z-LB0HfPIvUwTf9sqOIL4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
