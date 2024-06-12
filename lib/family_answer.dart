@@ -1,163 +1,136 @@
+import 'package:ducktogether/color.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'my_answer.dart';
+import 'model/answer.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class FamilyAnswerListScreen extends StatefulWidget {
+  final int? questionId;
+  final String? question;
+  const FamilyAnswerListScreen({super.key, this.questionId, this.question});
 
   @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: "answer screen",
-      home: ppListScreen(),
-    );
+  FamilyAnswerListScreenState createState() => FamilyAnswerListScreenState();
+}
+
+class FamilyAnswerListScreenState extends State<FamilyAnswerListScreen> {
+  List<Answer> answers = []; // 답변 저장하는 리스트
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadAnswers();
   }
-}
 
-class Purpose {
-  String content;
+  Future<void> _loadAnswers() async {
+    User? user = _auth.currentUser;
+    if (user == null || widget.questionId == null) {
+      setState(() {
+        _isLoading = false;
+      });
+      return;
+    }
 
-  Purpose({required this.content});
-}
+    DocumentSnapshot userSnapshot = await _firestore.collection('users').doc(user.uid).get();
+    String familyId = userSnapshot['familyId'];
 
-class ppListScreen extends StatefulWidget {
-  const ppListScreen({super.key});
+    QuerySnapshot answerSnapshot = await _firestore
+        .collection('families')
+        .doc(familyId)
+        .collection('answers')
+        .doc(widget.questionId.toString())
+        .collection('users')
+        .get();
 
-  @override
-  ppListScreenState createState() => ppListScreenState();
-}
+    List<Answer> loadedAnswers = [];
+    for (var doc in answerSnapshot.docs) {
+      loadedAnswers.add(Answer(
+        content: doc['answer'],
+      ));
+    }
 
-class ppListScreenState extends State<ppListScreen> {
-  List<Purpose> pps = []; // 답변 저장하는 리스트
-
-  void addPurpose(Purpose purpose) {
     setState(() {
-      pps.add(purpose);
+      answers = loadedAnswers;
+      _isLoading = false;
     });
   }
 
-  void deletePurpose(int index) {
+  void addAnswer(Answer answer) {
     setState(() {
-      pps.removeAt(index);
+      answers.add(answer);
+    });
+  }
+
+  void deleteAnswer(int index) {
+    setState(() {
+      answers.removeAt(index);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("답변 리스트"),
-      ),
-      body: ListView.builder(
-        itemCount: pps.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(
-              pps[index].content,
-              maxLines: 1, // 줄 수 제한
-              overflow: TextOverflow.ellipsis, // 내용이 길면 생략 부호(...) 표시
+      appBar: AppBar(backgroundColor: colorOrange,),
+      backgroundColor: Colors.white,
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            SizedBox(height: 60),
+            Center(
+              child: Text(
+                widget.question ?? '',
+                style: TextStyle(fontSize: 23, fontWeight: FontWeight.w600),
+                textAlign: TextAlign.center,
+              ),
             ),
-            onTap: () {
-              showModalBottomSheet(
-                context: context,
-                builder: (BuildContext context) {
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      ListTile(
-                        title: Text(pps[index].content),
-                      ),
-                      ListTile(
-                        leading: const Icon(Icons.edit),
-                        title: const Text('수정'),
-                        onTap: () async {
-                          Navigator.of(context).pop(); // 먼저 바텀 시트를 닫습니다
-                          final updatedPurpose = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ppEditScreen(pp: pps[index]),
-                            ),
-                          );
+            SizedBox(height: 40),
+            Expanded(
+              child: Container(
 
-                          if (updatedPurpose != null) {
-                            setState(() {
-                              pps[index] = updatedPurpose;
-                            });
-                          }
-                        },
+                child: ListView.builder(
+                  padding: const EdgeInsets.all(10),
+                  itemCount: answers.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+
+                      margin: const EdgeInsets.symmetric(vertical: 5),
+                      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 30),
+                      decoration: BoxDecoration(
+                        color: Color(0xFFF1F4F6),
+                        borderRadius: BorderRadius.circular(15),
                       ),
-                      ListTile(
-                        leading: const Icon(Icons.delete),
-                        title: const Text('삭제'),
-                        onTap: () {
-                          setState(() {
-                            pps.removeAt(index);
-                          });
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                      ListTile(
-                        leading: const Icon(Icons.close),
-                        title: const Text('닫기'),
-                        onTap: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                IconButton(
-                  icon: const Icon(Icons.edit),
-                  onPressed: () async {
-                    final updatedPurpose = await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ppEditScreen(pp: pps[index]),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: colorOrange,
+                            radius: 20,
+                            child: Icon(Icons.person, color: Colors.white),
+                          ),
+                          SizedBox(width: 20),
+                          Expanded(
+                            child: Text(
+                              answers[index].content,
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                            ),
+                          ),
+                        ],
                       ),
                     );
-
-                    if (updatedPurpose != null) {
-                      setState(() {
-                        pps[index] = updatedPurpose;
-                      });
-                    }
                   },
                 ),
-                IconButton(
-                  icon: const Icon(Icons.delete),
-                  onPressed: () => deletePurpose(index),
-                ),
-              ],
+              ),
             ),
-          );
-        },
+          ],
+        ),
       ),
-
-      // floatingActionButton: FloatingActionButton.large(
-      //   onPressed: () async {
-      //     final result = await Navigator.push(
-      //       context,
-      //       MaterialPageRoute(builder: (context) => const ppEditScreen()),
-      //     );
-      //
-      //     if (result != null) {
-      //       setState(() {
-      //         pps.add(result);
-      //         print(pps);
-      //       });
-      //     }
-      //   },
-      //   backgroundColor: const Color(0xFFFFC076),
-      //   child: const Icon(Icons.add),
-      // ),
     );
   }
 }
