@@ -79,7 +79,7 @@ class _MainPageState extends State<MainPage> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: '홈'),
+          // BottomNavigationBarItem(icon: Icon(Icons.home), label: '홈'),
           BottomNavigationBarItem(icon: Icon(Icons.question_answer), label: '오늘문답'),
           BottomNavigationBarItem(icon: Icon(Icons.history), label: '문답기록'),
           BottomNavigationBarItem(icon: Icon(Icons.family_restroom), label: '가족회의'),

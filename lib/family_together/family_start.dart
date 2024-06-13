@@ -17,8 +17,8 @@ class FamilyStartState extends State<FamilyStart> {
   List<Map<String, dynamic>>? _agendas = [];
   bool _isLoading = false;
   bool _isTimerActive = true;
-  // int _remainingSeconds = 900;
-  int _remainingSeconds = 9;
+  int _remainingSeconds = 900;
+  // int _remainingSeconds = 9;
   Timer? _timer;
 
   @override
@@ -59,6 +59,7 @@ class FamilyStartState extends State<FamilyStart> {
     setState(() {
       _agendas = [];
     });
+    Navigator.popUntil(context, (route) => route.isFirst);
   }
 
   @override
@@ -106,7 +107,7 @@ class FamilyStartState extends State<FamilyStart> {
                     style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 16),
-                  OrangeActionButton(text: "대화시작", onPressed: () => _isTimerActive ? null : _deleteSelectedAgendas,)
+                  OrangeActionButton(text: "대화종류", onPressed: () => _isTimerActive ? null : _deleteSelectedAgendas,)
                 ],
               ),
             ),
