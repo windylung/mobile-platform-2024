@@ -1,46 +1,70 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:ducktogether/model/question.dart';
+import 'package:ducktogether/my_answer.dart';
 import 'package:ducktogether/shared_button.dart';
+import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-import 'family_answer.dart';
-
-void main() {
-  runApp(const MyApp());
+class TodayQuestionScreen extends StatefulWidget {
+  @override
+  _TodayQuestionScreenState createState() => _TodayQuestionScreenState();
 }
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+
+class _TodayQuestionScreenState extends State<TodayQuestionScreen> {
+  String? _question;
+  int _questionsAnswered = 0;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: "answer screen",
-      home: TodayQuestion(),
-    );
+  void initState() {
+    super.initState();
+    _loadQuestion();
   }
-}
 
-class TodayQuestion extends StatelessWidget {
-  const TodayQuestion({super.key});
+  Future<void> _loadQuestion() async {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      DocumentSnapshot userSnapshot = await _firestore.collection('users').doc(user.uid).get();
+      String familyId = userSnapshot['familyId'];
+
+      DocumentSnapshot familySnapshot = await _firestore.collection('families').doc(familyId).get();
+      _questionsAnswered = familySnapshot['questionsAnswered'];
+
+      DocumentSnapshot questionSnapshot = await _firestore.collection('questions').doc('question$_questionsAnswered').get();
+      setState(() {
+        _question = questionSnapshot['text'];
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        middle: Text('오늘의 질문'),
-      ),
-      child: Center(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text(
-              "질문",
-              style: TextStyle(fontSize: 24),
-
+            Spacer(),
+            Center(
+              child: Text(
+                _question ?? '질문을 불러오는 중입니다...',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
             ),
-            const SizedBox(height: 20),
-            const OrangeButton(
-              text: "답변하기",
-              route: '/my_answer'
+            Spacer(),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: OrangeActionButton(text: "답변하기", onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyAnswerScreen(question: Question(content: _question!), questionId: _questionsAnswered,),
+                  ),
+                );
+              })
             ),
           ],
         ),
@@ -48,4 +72,3 @@ class TodayQuestion extends StatelessWidget {
     );
   }
 }
-

@@ -1,3 +1,6 @@
+import 'package:ducktogether/family_together/family_start.dart';
+import 'package:ducktogether/logout.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ducktogether/LoginScreen.dart';
 import 'package:ducktogether/my_answer.dart';
@@ -15,8 +18,8 @@ import 'package:ducktogether/family_together/select_agenda.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
-
-void main() async{
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -24,32 +27,27 @@ void main() async{
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
-  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+
       debugShowCheckedModeBanner: false,
-      navigatorKey: navigatorKey,
       title: 'Mobile Platform 2024',
-      home: const MainPage(),
       initialRoute: '/',
       routes: {
-        // '/' : (context) => MainPage(),
-
+        '/': (context) => AuthStateHandler(),
         '/family_together': (context) => const FamilyTogetherPage(),
         '/family_together/agenda': (context) => const AgendaInputPage(),
         '/family_together/history': (context) => const FamilyHistoryPage(),
-        '/family_together/history_detail': (context) =>
-        const FamilyHistoryPage(),
+        '/family_together/history_detail': (context) => const FamilyHistoryPage(),
         '/family_together/waiting': (context) => const WaitingPage(),
         '/family_together/select_agenda': (context) => const SelectAgendaPage(),
-        '/signup' : (context) => const SignUpScreen(),
-        '/my_answer' : (context) => const ppEditScreen(),
-        '/family_answer' : (context) => const ppListScreen()
-        // 여기에 추가
-        // Navigator.pushNamed(context, '/family_together/start'),
+        '/signup': (context) => const SignUpScreen(),
+        '/my_answer': (context) => const MyAnswerScreen(),
+        '/family_answer': (context) => FamilyAnswerListScreen(),
+        '/login': (context) => const LoginScreen(),
+        '/home': (context) => const MainPage(),
+        '/family/start' : (context) => const FamilyStart()
       },
     );
   }
@@ -65,38 +63,29 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   var _index = 0;
   final List<Widget> _pages = [
-    const Home(),
-    const TodayQuestion(),
+    // const Home(),
+    TodayQuestionScreen(),
     const QuestionHistory(),
     const FamilyTogetherPage(),
-    const LoginScreen()
+    const LogoutScreen()
   ];
 
-  @override
-  void initState() => super.initState();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      // appBar: AppBar(
-      //   title: const Text("오리함께"),
-      // ),
       body: SafeArea(
         child: _pages[_index],
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: '홈'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.question_answer), label: '오늘문답'),
+          // BottomNavigationBarItem(icon: Icon(Icons.home), label: '홈'),
+          BottomNavigationBarItem(icon: Icon(Icons.question_answer), label: '오늘문답'),
           BottomNavigationBarItem(icon: Icon(Icons.history), label: '문답기록'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.family_restroom), label: '가족회의'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.login), label: '로그인'),
+          BottomNavigationBarItem(icon: Icon(Icons.family_restroom), label: '가족회의'),
+          BottomNavigationBarItem(icon: Icon(Icons.login), label: '로그아웃'),
         ],
         currentIndex: _index,
-
         onTap: (value) {
           setState(() {
             _index = value;
@@ -104,6 +93,40 @@ class _MainPageState extends State<MainPage> {
         },
         selectedItemColor: colorOrange,
         unselectedItemColor: Colors.grey,
+      ),
+    );
+  }
+}
+
+class AuthStateHandler extends StatefulWidget {
+  @override
+  _AuthStateHandlerState createState() => _AuthStateHandlerState();
+}
+
+class _AuthStateHandlerState extends State<AuthStateHandler> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkAuthState();
+    });
+  }
+
+  Future<void> _checkAuthState() async {
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user == null) {
+        Navigator.pushReplacementNamed(context, '/login');
+      } else {
+        Navigator.pushReplacementNamed(context, '/home');
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: CircularProgressIndicator(), // 로딩 스피너
       ),
     );
   }
